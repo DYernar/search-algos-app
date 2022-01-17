@@ -52,8 +52,8 @@ class Grid {
     gridState[x][y].setVisited();
   }
 
-  void setPath(Cell p) {
-    gridState[p.x][p.y].setPath();
+  void setPath(int x, int y) {
+    gridState[x][y].setPath();
   }
 
   void setObstacle(int x, int y) {
@@ -74,7 +74,7 @@ class Grid {
       return Colors.red;
     } else if (cell.isVisited) {
       return Colors.blue;
-    } 
+    }
     return Colors.black;
   }
 }
@@ -108,7 +108,6 @@ class Cell {
     return !isStart && !isObstacle && !isVisited;
   }
 }
-
 
 enum SEARCH_TYPE {
   BFS,

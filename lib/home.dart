@@ -99,7 +99,66 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_searchType == SEARCH_TYPE.BFS) {
       _bfsSearch();
       return;
+    } else if (_searchType == SEARCH_TYPE.DFS) {
+      _dfsSearch();
+      return;
     }
+    setState(() {
+      isSearching = false;
+    });
+  }
+
+  Future<void> _dfsSearch() async {
+    Future<bool> visit(int x, int y) async {
+      if (x < 0 || y < 0 || x > 19 || y > 19) {
+        return false;
+      }
+      if (!grid.isStart(x, y) && !grid.canAdd(x, y)) {
+        return false;
+      }
+      if (grid.gridState[x][y].isGoal) {
+        return true;
+      }
+
+      setState(() {
+        grid.setVisited(x, y);
+      });
+      await Future.delayed(Duration(milliseconds: speeds[speed]));
+
+      bool right = await visit(x + 1, y);
+      if (right) {
+        setState(() {
+          grid.setPath(x, y);
+        });
+        return true;
+      }
+      bool left = await visit(x - 1, y);
+      if (left) {
+        setState(() {
+          grid.setPath(x, y);
+        });
+        return true;
+      }
+      bool bottom = await visit(x, y + 1);
+      if (bottom) {
+        setState(() {
+          grid.setPath(x, y);
+        });
+        return true;
+      }
+      bool top = await visit(x, y - 1);
+      if (top) {
+        setState(() {
+          grid.setPath(x, y);
+        });
+        return true;
+      }
+
+      return false;
+    }
+
+    await visit(grid.start.x, grid.start.y);
+
     setState(() {
       isSearching = false;
     });
@@ -186,7 +245,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     for (Cell p in path) {
       if (!grid.isStart(p.x, p.y)) {
-        grid.setPath(p);
+        grid.setPath(p.x, p.y);
         setState(() {});
       }
     }

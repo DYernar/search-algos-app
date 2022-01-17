@@ -1,4 +1,4 @@
-# Search algorithms visualisation
+# Search algorithms visualization
 ## Getting Started
 
 ![alt text](https://github.com/DYernar/search-algos-app/blob/main/far.jpg?raw=true)
